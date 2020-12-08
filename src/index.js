@@ -39,7 +39,7 @@ module.exports = ({ config, db, router, cache, apiStatus, apiError, getRestApiCl
     return {
         domainName: '@grupakmk',
         pluginName: 'gus-plugin',
-        route: 'gus',
+        route: '/gus',
         router
     };
 };
