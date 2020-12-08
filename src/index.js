@@ -1,10 +1,34 @@
 module.exports = ({ config, db, router, cache, apiStatus, apiError, getRestApiClient }) => {
-    console.warn('----> Plugin initialized');
-    
+    const createMage2RestClient = () => {
+        const client = getRestApiClient();
+        client.addMethods('gus', (restClient) => {
+            const module = {};
+            module.get = (taxVat) => {
+                return restClient.get(`/kmk-gus/getgusdata/${taxVat}`);
+            };
+
+            return module;
+        });
+
+        return client;
+    };
+
+    router.get('/:taxvat', async (req, res) => {
+        const { taxvat } = req.params;
+        try {
+            if (!taxvat) { throw new Error('Tax vat number is required'); }
+            const client = createMage2RestClient();
+            const response = await client.gus.get(taxvat);
+            apiStatus(res, response, 200);
+        } catch (e) {
+            apiError(res, e);
+        }
+    });
+
     return {
-        domainName: '{{domainName}}',
-        pluginName: '{{pluginName}}',
-        route: '{{restRoute}}',
+        domainName: '@grupakmk',
+        pluginName: 'gus-plugin',
+        route: 'gus',
         router
     };
 };
