@@ -1,3 +1,14 @@
+/**
+ * This plugin provides support for fetching GUS data.
+ * @param config
+ * @param db
+ * @param router
+ * @param cache
+ * @param apiStatus
+ * @param apiError
+ * @param getRestApiClient
+ * @returns {{router: Router, route: string, pluginName: string, domainName: string}}
+ */
 module.exports = ({ config, db, router, cache, apiStatus, apiError, getRestApiClient }) => {
     const createMage2RestClient = () => {
         const client = getRestApiClient();
